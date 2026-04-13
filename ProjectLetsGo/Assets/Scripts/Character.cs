@@ -2,37 +2,45 @@ using UnityEngine;
 
 public abstract class Character : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    public float health;
+    [SerializeField] private float health;
     [SerializeField] private string charName;
+    [SerializeField] private Sprite characterSprite;
+
+    public Sprite CharacterSprite
+    {
+        get { return characterSprite; }
+    }
+
+    public float Health
+    {
+        get { return health; }
+        set
+        {
+            health = value;
+            if (health < 0)
+            {
+                health = 0;
+            }
+        }
+    }
 
     public string CharName
-    { 
-        get { return charName; } 
+    {
+        get { return charName; }
+        set { charName = value; }
     }
 
     public abstract void Attack(Character toHit);
 
-    public void TakeDamage(float damage)
+    public virtual void TakeDamage(float damage)
     {
-        health -= damage;
-        Debug.Log(charName + " got hit for " + damage + " damage! " +
-            "Current health: " + health);
+        Health -= damage;
+        Debug.Log(charName + " got hit for " + damage + " damage! Current health: " + Health);
     }
 
     public void TakeDamage(Weapon weapon)
     {
         float damage = weapon.GetDamage();
         TakeDamage(damage);
-    }
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 }
